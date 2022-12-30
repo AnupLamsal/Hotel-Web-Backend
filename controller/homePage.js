@@ -1,4 +1,4 @@
-const HomePage = require("../models/homePage.js");
+const HomePage = require("../models/homePage");
 
 const getHomePage = async (req, res) => {
   try {

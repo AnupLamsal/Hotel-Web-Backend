@@ -1,4 +1,4 @@
-const foodPage = require("../models/foodpage.js");
+const foodPage = require("../models/foodPageModel");
 
 // Filter, sorting and paginating
 

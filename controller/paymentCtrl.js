@@ -1,6 +1,6 @@
 const paymentPage = require("../models/paymentPage.js");
 const Users = require("../models/user.js");
-const foodPage = require("../models/foodpage.js");
+const foodPage = require("../models/foodPageModel.js");
 
 const getPayments = async (req, res) => {
   try {

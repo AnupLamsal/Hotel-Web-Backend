@@ -10,7 +10,7 @@ const contactUs = require("./routes/contactRoute.js");
 const { notFound, errorHandler } = require("./middleware/errorMiddleware.js");
 const userRoutes = require("./routes/users.js");
 const homePageRoutes = require("./routes/homePage.js");
-const foodPageRoutes = require("./routes/foodPage.js");
+const foodPageRoutes = require("./routes/foodPageRoute.js");
 const paymentRoutes = require("./routes/payment.js");
 const morgan = require("morgan");
 
@@ -62,6 +62,8 @@ const PORT = process.env.PORT || 6000;
 //   })
 //   .then(() => app.listen(PORT, console.log(`Server running ${PORT}`)))
 //   .catch(error => console.log(error));
+
+mongoose.set("strictQuery", true);
 
 mongoose
   .connect(process.env.Anup_Mongo_URL, {
