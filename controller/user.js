@@ -1,8 +1,6 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const mongoose = require("mongoose");
 const User = require("../models/user.js");
-const foodPage = require("../models/foodpage.js");
 const verifyUser = require("../models/valideUser.js");
 const { sendEmail } = require("../Utils/nodemailer.js");
 
