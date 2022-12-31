@@ -1,6 +1,8 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const mongoose = require("mongoose");
 const User = require("../models/user.js");
+const foodPage = require("../models/foodPageModel");
 const verifyUser = require("../models/valideUser.js");
 const { sendEmail } = require("../Utils/nodemailer.js");
 
@@ -18,7 +20,6 @@ const signin = async (req, res) => {
   try {
     // finding exisiting old user
     const existingUser = await User.findOne({ email });
-
     if (!existingUser)
       return res.status(404).json({ message: "User not found" });
 
@@ -29,7 +30,6 @@ const signin = async (req, res) => {
 
     if (!isPasswordCorrect)
       return res.status(404).json({ message: "Password Incorrect" });
-
     if (!existingUser.verifiedUser) {
       let token = await verifyUser.findOne({ userId: existingUser._id });
       if (!token) {
@@ -43,9 +43,9 @@ const signin = async (req, res) => {
         }).save();
         const url = `${process.env.BASE_URL}/user/${existingUser._id}/verify/${token.token}`;
         sendEmail(existingUser.email, "Verify Email", url);
-        return res.status(355).send({ message: "Please verify your email" });
+        return res.status(355).json({ message: "Please verify your email." });
       }
-      return res.status(355).send({ message: "Please verify your email" });
+      return res.status(355).send({ message: "Please verify your email.." });
     }
     const token = jwt.sign(
       {
@@ -103,20 +103,20 @@ const signup = async (req, res) => {
     if (existingUser)
       return res.status(404).json({ message: "User already exist" });
 
-    if (firstName.length < 3 || firstName.length > 10)
-      return res
-        .status(404)
-        .json({ message: "Firstname required 3 to 10 char" });
+    // if (firstName.length < 3 || firstName.length > 10)
+    //   return res
+    //     .status(404)
+    //     .json({ message: "Firstname required 3 to 10 char" });
 
-    if (lastName.length < 3 || lastName.length > 10)
-      return res
-        .status(404)
-        .json({ message: "Lastname required 3 to 10 char" });
+    // if (lastName.length < 3 || lastName.length > 10)
+    //   return res
+    //     .status(404)
+    //     .json({ message: "Lastname required 3 to 10 char" });
 
-    if (password.length < 8 || password.length > 40)
-      return res
-        .status(404)
-        .json({ message: "Password required 8 to 40 char" });
+    // if (password.length < 8 || password.length > 40)
+    //   return res
+    //     .status(404)
+    //     .json({ message: "Password required 8 to 40 char" });
 
     if (password !== confirmPassword)
       return res.status(404).json({ message: "Password dont match" });
@@ -163,7 +163,7 @@ const signup = async (req, res) => {
       sendEmail(result.email, "Verify Email", url);
       res
         .status(355)
-        .json({ result, token, message: "Please verify your email" });
+        .json({ result, token, message: "Please verify your email..." });
     } else {
       res.status(201).json({
         token,

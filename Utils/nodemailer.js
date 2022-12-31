@@ -3,10 +3,7 @@ const { createTransport } = require("nodemailer");
 exports.sendEmail = async (email, subject, text) => {
   try {
     const transporter = createTransport({
-      host: process.env.HOST,
-      service: process.env.SERVICE,
-      port: Number(process.env.EMAIL_PORT),
-      secure: Boolean(process.env.SECURE),
+      service: "gmail",
       auth: {
         type: "OAuth2",
         user: process.env.USER,
@@ -17,12 +14,13 @@ exports.sendEmail = async (email, subject, text) => {
         expires: 452965816868616,
       },
     });
-    await transporter.sendMail({
-      from: process.env.USER,
-      to: email,
-      subject: subject,
-      text: text,
-      html: `<div
+    transporter.sendMail(
+      {
+        from: process.env.USER,
+        to: email,
+        subject: subject,
+        text: text,
+        html: `<div
 			style="
 			  display: flex;
 			  justify-content: center;
@@ -43,7 +41,15 @@ exports.sendEmail = async (email, subject, text) => {
 							<div variant="body1" style="text-align: center; letter-spacing: 2px; margin: 10px auto;">Thank you for choosing us</div>
 						</div>
 					</div>`,
-    });
+      },
+      (err, info) => {
+        if (err) {
+          console.log(err.message, "Email error");
+        } else {
+          console.log("Email sent successfully");
+        }
+      }
+    );
   } catch (error) {
     return error;
   }
